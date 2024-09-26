@@ -1,6 +1,3 @@
-//vypis
-console.log("Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)");
-
 const readline = require('readline');
 
 // Vytvoření rozhraní pro čtení vstupu
@@ -10,18 +7,18 @@ const rl = readline.createInterface({
 });
 
 // Funkce pro dotazování uživatele
-function zeptatSe() {
-  rl.question('Zadej číslo od 1 do 9: ', (odpoved) => {
+function zeptatSePP() {
+  rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)', (odpovedPP) => {
     // Zkontroluj, zda je odpověď platná
-    if (odpoved >= 1 && odpoved <= 9) {
-      console.log(`Děkuji, zvolil(a) jsi číslo: ${odpoved}`);
+    if (odpovedPP >= 1 && odpovedPP <= 9) {
+      console.log(`Děkuji, pocet prikladu bude: ${odpovedPP}`);
       rl.close(); // Zavřít rozhraní, pokud je vstup platný
     } else {
       console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
-      zeptatSe(); // Znovu se ptát uživatele
+      zeptatSePP(); // Znovu se ptát uživatele
     }
   });
 }
 
 // Spusť funkci
-zeptatSe();
+zeptatSePP();
