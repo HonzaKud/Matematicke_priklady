@@ -6,11 +6,14 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
-//console.log(nahodne); generator nahodnych cisel mezi 1 az 9
-
 let pocetprikladu = null;
 let pocetclenu = null;
+let random = null;
+
+function generator() {
+  const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
+  random = nahodne;
+}
 
 // Funkce pro dotazování uživatele na pocet prikladu
 function zeptatSePP() {
@@ -37,7 +40,8 @@ function zeptatSePPro() {
          // Generace poctu prikladu
             for (let i = 0; i < pocetprikladu; i++) {
                 //const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
-                console.log(`priklad ${i + 1}: ${nahodne} ${nahodne}`); //generator nahodnych cisel mezi 1 az 9
+                generator();
+                console.log(`priklad ${i + 1}: ${random} ${random}`); //generator nahodnych cisel mezi 1 az 9
                 console.log(pocetclenu);
                 console.log(pocetprikladu);
             }
