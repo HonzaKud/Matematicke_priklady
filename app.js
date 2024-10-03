@@ -15,6 +15,7 @@ function generator() {
   random = nahodne;
 }
 
+
 // Funkce pro dotazování uživatele na pocet prikladu
 function zeptatSePP() {
   rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)', (odpovedPP) => {
@@ -41,9 +42,24 @@ function zeptatSePPro() {
             for (let i = 0; i < pocetprikladu; i++) {
                 //const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
                 generator();
-                console.log(`priklad ${i + 1}: ${random} ${random}`); //generator nahodnych cisel mezi 1 az 9
-                console.log(pocetclenu);
-                console.log(pocetprikladu);
+                
+
+
+
+                console.log(`priklad ${i + 1}:`);
+
+                for (let j = 0; j < pocetclenu; j++) {
+                  generator()
+                  process.stdout.write(`${random} + `); // Použijeme stdout pro vypisování na stejný řádek
+                }
+                console.log(); // Přidáme nový řádek na konec
+
+
+
+
+                //console.log(`priklad ${i + 1}: ${random}`); //generator nahodnych cisel mezi 1 az 9
+                //console.log(pocetclenu);
+                //console.log(pocetprikladu);
             }
         
         rl.close(); // Zavřít rozhraní, pokud je vstup platný
