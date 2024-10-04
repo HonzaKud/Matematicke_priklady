@@ -9,12 +9,18 @@ const rl = readline.createInterface({
 let pocetprikladu = null;
 let pocetclenu = null;
 let random = null;
+let znak = null;
 
 function generator() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
   random = nahodne;
 }
 
+function nahodneZnamenko() {
+  const znamenka = ['+', '-', '*']; // Pole obsahující matematická znaménka
+  const index = Math.floor(Math.random() * znamenka.length); // Náhodně vybere index v poli
+  znak = znamenka[index];
+}
 
 // Funkce pro dotazování uživatele na pocet prikladu
 function zeptatSePP() {
@@ -42,24 +48,17 @@ function zeptatSePPro() {
             for (let i = 0; i < pocetprikladu; i++) {
                 //const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
                 generator();
-                
-
-
 
                 console.log(`priklad ${i + 1}:`);
 
                 for (let j = 0; j < pocetclenu; j++) {
                   generator()
-                  process.stdout.write(`${random} + `); // Použijeme stdout pro vypisování na stejný řádek
+                  nahodneZnamenko()
+                  process.stdout.write(`${random} ${znak} `); // Použijeme stdout pro vypisování na stejný řádek
                 }
+                 process.stdout.write(`=`);
                 console.log(); // Přidáme nový řádek na konec
 
-
-
-
-                //console.log(`priklad ${i + 1}: ${random}`); //generator nahodnych cisel mezi 1 az 9
-                //console.log(pocetclenu);
-                //console.log(pocetprikladu);
             }
         
         rl.close(); // Zavřít rozhraní, pokud je vstup platný
