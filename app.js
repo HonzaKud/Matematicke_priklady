@@ -54,9 +54,16 @@ function zeptatSePPro() {
                 for (let j = 0; j < pocetclenu; j++) {
                   generator()
                   nahodneZnamenko()
-                  process.stdout.write(`${random} ${znak} `); // Použijeme stdout pro vypisování na stejný řádek
+                  process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
+
+                  if (j+1 < pocetclenu) {
+                    process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek  
+                  } else {
+                    process.stdout.write(`=`);  
+                  }
+                  
                 }
-                 process.stdout.write(`=`);
+                 
                 console.log(); // Přidáme nový řádek na konec
 
             }
