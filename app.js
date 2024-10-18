@@ -12,7 +12,9 @@ let random = null;
 let znak = null;
 let priklad = "";
 let vysledek;
+let k = null;
 let polevysledky = [];
+let poleodpovedi = [];
 
 function generator() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
@@ -39,6 +41,28 @@ function zeptatSePP() {
     }
   });
 }
+
+
+
+
+// Funkce pro dotazování uživatele na výsledek
+function zeptatSeVysledek() {
+  rl.question(`Napis vysledek prikladu cislo ${k + 1} :`, (odpovedVy) => {
+    console.log('Děkuji');
+    poleodpovedi.push(odpovedVy);  // Přidáme odpověď do pole 
+    k++; // Zvětšíme k o 1 pro další příklad
+    
+    if (k < pocetprikladu) { // Ověření, zda jsme ještě neprošli všechny příklady
+      zeptatSeVysledek(); // Zavoláme funkci znovu pro další příklad
+    }
+    else
+    {
+    console.log('Všechny odpovědi: ', poleodpovedi);
+    rl.close();
+    }
+  })
+};
+
 
 // Funkce pro dotazování uživatele na pocet clenu v prikladech
 function zeptatSePPro() {
@@ -77,7 +101,11 @@ function zeptatSePPro() {
 
             }
         console.log(polevysledky);
-        rl.close(); // Zavřít rozhraní, pokud je vstup platný
+        zeptatSeVysledek();
+
+
+
+        
       } else {
         console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
         zeptatSePPro(); // Znovu se ptát uživatele
