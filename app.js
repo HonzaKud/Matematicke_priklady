@@ -10,6 +10,8 @@ let pocetprikladu = null;
 let pocetclenu = null;
 let random = null;
 let znak = null;
+let priklad = "";
+let vysledek;
 
 function generator() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
@@ -55,14 +57,19 @@ function zeptatSePPro() {
                   generator()
                   nahodneZnamenko()
                   process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
+                  priklad += `${random}`;
 
                   if (j+1 < pocetclenu) {
-                    process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek  
+                    process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek
+                    priklad += `${znak}`;
                   } else {
-                    process.stdout.write(`=`);  
+                    process.stdout.write(`= `);  
                   }
                   
                 }
+                vysledek = eval(priklad);
+                    console.log(vysledek);
+                    priklad = '';
                  
                 console.log(); // Přidáme nový řádek na konec
 
