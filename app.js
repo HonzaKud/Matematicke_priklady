@@ -12,6 +12,7 @@ let random = null;
 let znak = null;
 let priklad = "";
 let vysledek;
+let polevysledky = [];
 
 function generator() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
@@ -69,12 +70,13 @@ function zeptatSePPro() {
                 }
                 vysledek = eval(priklad);
                     console.log(vysledek);
+                    polevysledky.push(vysledek);
                     priklad = '';
                  
                 console.log(); // Přidáme nový řádek na konec
 
             }
-        
+        console.log(polevysledky);
         rl.close(); // Zavřít rozhraní, pokud je vstup platný
       } else {
         console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
