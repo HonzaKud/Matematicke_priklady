@@ -65,7 +65,6 @@ function zeptatSeVysledek() {
 
 //Funkce pro porovnani dvou poli
 function porovnaniPoli (polevysledky, poleodpovedi) {
-  
   for (let i = 0; i < polevysledky.length; i++) {
     if (polevysledky[i] == poleodpovedi[i]) {
       spravneodpovedi++; // Zvyšte počet, pokud se hodnoty neshodují
@@ -73,6 +72,41 @@ function porovnaniPoli (polevysledky, poleodpovedi) {
   }
   console.log(`Pocet spravnych odpovedi je: ${spravneodpovedi} / ${pocetprikladu}`);
 }
+
+
+function generacePrikladu ()  {
+for (let i = 0; i < pocetprikladu; i++) {
+  generator();
+  console.log(`priklad ${i + 1}:`);
+  for (let j = 0; j < pocetclenu; j++) {
+    generator()
+    nahodneZnamenko()
+    process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
+    priklad += `${random}`;
+    if (j+1 < pocetclenu) {
+      process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek
+      priklad += `${znak}`;
+    } else {
+      process.stdout.write(`= `);  
+    }
+  }
+  vysledek = eval(priklad);
+      console.log(vysledek);
+      polevysledky.push(vysledek);
+      priklad = '';
+  console.log(); // Přidáme nový řádek na konec
+}
+console.log(polevysledky);
+zeptatSeVysledek();
+}
+
+
+
+
+
+
+
+
 
 
 // Funkce pro dotazování uživatele na pocet clenu v prikladech
@@ -83,40 +117,7 @@ function zeptatSePPro() {
         console.log(`Děkuji, pocet clenu bude: ${odpovedPPro}`);
         pocetclenu = odpovedPPro;
          // Generace poctu prikladu
-            for (let i = 0; i < pocetprikladu; i++) {
-                generator();
-
-                console.log(`priklad ${i + 1}:`);
-
-                for (let j = 0; j < pocetclenu; j++) {
-                  generator()
-                  nahodneZnamenko()
-                  process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
-                  priklad += `${random}`;
-
-                  if (j+1 < pocetclenu) {
-                    process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek
-                    priklad += `${znak}`;
-                  } else {
-                    process.stdout.write(`= `);  
-                  }
-                  
-                }
-                vysledek = eval(priklad);
-                    console.log(vysledek);
-                    polevysledky.push(vysledek);
-                    priklad = '';
-                 
-                console.log(); // Přidáme nový řádek na konec
-
-            }
-        console.log(polevysledky);
-        zeptatSeVysledek();
-        
-
-
-
-        
+             generacePrikladu()
       } else {
         console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
         zeptatSePPro(); // Znovu se ptát uživatele
