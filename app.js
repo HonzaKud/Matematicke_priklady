@@ -12,9 +12,10 @@ let random = null;
 let znak = null;
 let priklad = "";
 let vysledek;
-let k = null;
+let k = 0;
 let polevysledky = [];
 let poleodpovedi = [];
+let spravneodpovedi = 0;
 
 function generator() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
@@ -42,9 +43,6 @@ function zeptatSePP() {
   });
 }
 
-
-
-
 // Funkce pro dotazování uživatele na výsledek
 function zeptatSeVysledek() {
   rl.question(`Napis vysledek prikladu cislo ${k + 1} :`, (odpovedVy) => {
@@ -59,9 +57,22 @@ function zeptatSeVysledek() {
     {
     console.log('Všechny odpovědi: ', poleodpovedi);
     rl.close();
+    porovnaniPoli (polevysledky, poleodpovedi);
+    
     }
   })
 };
+
+//Funkce pro porovnani dvou poli
+function porovnaniPoli (polevysledky, poleodpovedi) {
+  
+  for (let i = 0; i < polevysledky.length; i++) {
+    if (polevysledky[i] == poleodpovedi[i]) {
+      spravneodpovedi++; // Zvyšte počet, pokud se hodnoty neshodují
+    }
+  }
+  console.log(`Pocet spravnych odpovedi je: ${spravneodpovedi} / ${pocetprikladu}`);
+}
 
 
 // Funkce pro dotazování uživatele na pocet clenu v prikladech
@@ -73,7 +84,6 @@ function zeptatSePPro() {
         pocetclenu = odpovedPPro;
          // Generace poctu prikladu
             for (let i = 0; i < pocetprikladu; i++) {
-                //const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
                 generator();
 
                 console.log(`priklad ${i + 1}:`);
@@ -102,6 +112,7 @@ function zeptatSePPro() {
             }
         console.log(polevysledky);
         zeptatSeVysledek();
+        
 
 
 
