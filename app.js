@@ -6,124 +6,116 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-let pocetprikladu = null;
-let pocetclenu = null;
+let numberOfExamples = null;
+let numberOfTerms = null;
 let random = null;
-let znak = null;
+let operator = null;
 let priklad = "";
-let vysledek;
+let result;
 let k = 0;
 let polevysledky = [];
 let poleodpovedi = [];
-let spravneodpovedi = 0;
+let correctAnswersCount = 0;
 
-function generator() {
+//funkce pro generovani nahodneho cisla mezi cisli 1 az 9
+function generateRandomNumber() {
   const nahodne = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
   random = nahodne;
 }
 
-function nahodneZnamenko() {
+//funkce pro generovani nahodneho znaku (operatoru) +, - *
+function generateRandomOperator() {
   const znamenka = ['+', '-', '*']; // Pole obsahující matematická znaménka
   const index = Math.floor(Math.random() * znamenka.length); // Náhodně vybere index v poli
-  znak = znamenka[index];
+  operator = znamenka[index];
 }
 
 // Funkce pro dotazování uživatele na pocet prikladu
-function zeptatSePP() {
+function askForNumberOfExamples() {
   rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)', (odpovedPP) => {
     // Zkontroluj, zda je odpověď platná
     if (odpovedPP >= 1 && odpovedPP <= 9) {
       console.log(`Děkuji, pocet prikladu bude: ${odpovedPP}`);
-      pocetprikladu = odpovedPP;
-      zeptatSePPro(); //rl.close(); // Zavřít rozhraní, pokud je vstup platný
+      numberOfExamples = odpovedPP;
+      askForNumberOfTerms(); // Zavřít rozhraní, pokud je vstup platný
     } else {
       console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
-      zeptatSePP(); // Znovu se ptát uživatele
+      askForNumberOfExamples(); // Znovu se ptát uživatele
     }
   });
 }
 
 // Funkce pro dotazování uživatele na výsledek
-function zeptatSeVysledek() {
+function askForResult() {
   rl.question(`Napis vysledek prikladu cislo ${k + 1} :`, (odpovedVy) => {
     console.log('Děkuji');
     poleodpovedi.push(odpovedVy);  // Přidáme odpověď do pole 
     k++; // Zvětšíme k o 1 pro další příklad
     
-    if (k < pocetprikladu) { // Ověření, zda jsme ještě neprošli všechny příklady
-      zeptatSeVysledek(); // Zavoláme funkci znovu pro další příklad
+    if (k < numberOfExamples) { // Ověření, zda jsme ještě neprošli všechny příklady
+      askForResult(); // Zavoláme funkci znovu pro další příklad
     }
     else
     {
-    console.log('Všechny odpovědi: ', poleodpovedi);
+    //console.log('Všechny odpovědi: ', poleodpovedi);
     rl.close();
-    porovnaniPoli (polevysledky, poleodpovedi);
-    
+    compareArrays (polevysledky, poleodpovedi); 
     }
   })
 };
 
 //Funkce pro porovnani dvou poli
-function porovnaniPoli (polevysledky, poleodpovedi) {
+function compareArrays (polevysledky, poleodpovedi) {
   for (let i = 0; i < polevysledky.length; i++) {
     if (polevysledky[i] == poleodpovedi[i]) {
-      spravneodpovedi++; // Zvyšte počet, pokud se hodnoty neshodují
+      correctAnswersCount++; // Zvyšte počet, pokud se hodnoty neshodují
     }
   }
-  console.log(`Pocet spravnych odpovedi je: ${spravneodpovedi} / ${pocetprikladu}`);
+  console.log(`Pocet spravnych odpovedi je: ${correctAnswersCount} / ${numberOfExamples}`);
 }
 
-
-function generacePrikladu ()  {
-for (let i = 0; i < pocetprikladu; i++) {
-  generator();
-  console.log(`priklad ${i + 1}:`);
-  for (let j = 0; j < pocetclenu; j++) {
-    generator()
-    nahodneZnamenko()
-    process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
-    priklad += `${random}`;
-    if (j+1 < pocetclenu) {
-      process.stdout.write(`${znak} `); // Použijeme stdout pro vypisování na stejný řádek
-      priklad += `${znak}`;
+//funkce pro vytvareni prikladu
+function createExamples ()  {
+  for (let i = 0; i < numberOfExamples; i++) {
+    generateRandomNumber();
+   console.log(`priklad ${i + 1}:`);
+   for (let j = 0; j < numberOfTerms; j++) {
+    generateRandomNumber()
+      generateRandomOperator()
+      process.stdout.write(`${random} `); // Použijeme stdout pro vypisování na stejný řádek
+     priklad += `${random}`;
+     if (j+1 < numberOfTerms) {
+      process.stdout.write(`${operator} `); // Použijeme stdout pro vypisování na stejný řádek
+      priklad += `${operator}`;
     } else {
       process.stdout.write(`= `);  
     }
   }
-  vysledek = eval(priklad);
-      console.log(vysledek);
-      polevysledky.push(vysledek);
+  result = eval(priklad);
+      //console.log(result);
+      polevysledky.push(result);
       priklad = '';
   console.log(); // Přidáme nový řádek na konec
+  }
+//console.log(polevysledky);
+askForResult();
 }
-console.log(polevysledky);
-zeptatSeVysledek();
-}
-
-
-
-
-
-
-
-
-
 
 // Funkce pro dotazování uživatele na pocet clenu v prikladech
-function zeptatSePPro() {
+function askForNumberOfTerms() {
     rl.question('Napis kolik ma mit kazdy priklad clenu (napis cislo od 1 do 9)', (odpovedPPro) => {
       // Zkontroluj, zda je odpověď platná
       if (odpovedPPro >= 1 && odpovedPPro <= 9) {
         console.log(`Děkuji, pocet clenu bude: ${odpovedPPro}`);
-        pocetclenu = odpovedPPro;
+        numberOfTerms = odpovedPPro;
          // Generace poctu prikladu
-             generacePrikladu()
+             createExamples()
       } else {
         console.log('Neplatný vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
-        zeptatSePPro(); // Znovu se ptát uživatele
+        askForNumberOfTerms(); // Znovu se ptát uživatele
       }
     });
   }
 
 // Spusť funkci
-zeptatSePP();
+askForNumberOfExamples();
