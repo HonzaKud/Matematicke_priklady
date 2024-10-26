@@ -8,8 +8,6 @@ const rl = readline.createInterface({
 
 let numberOfExamples = null; //Promenna na pocet prikladu, ktere vyplni uzivatel
 let numberOfTerms = null; // Promenna na pocet clenu, tohle take vyplni uzivatel
-let random = null; // Do teto promenne se uklada nahodne vygenerovane cislo, ktere se pak vklada do prikladu
-let operator = null; // Do teto promenne se uklada nahodne vygenerovany znak (+,-,*), ktere se pak vklada do prikladu
 let exampleExpression = ""; // Do teto promenne se uklada postupne cely priklad, ktery se pak nasledne vypocita pomoci funce eval a ulozi do promenne result
 let result; // Do teto promenne se ulozi vysledek pocitacem spocitaneho prikladu, tato promenna se pak ulozi do pole resultsArray
 let exampleIndex = 0; //Promenna, ktera slouzi k vypisovani poctu prikladu, az se promenna rovna numberOfExamples, pak dojde k porovnani pole vysledku s polem vysledku uzivatele
@@ -17,18 +15,7 @@ let resultsArray = []; // Pole do ktereho se ukladaji spravne vysledky prikladu,
 let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivatel
 let correctAnswersCount = 0; //Promenna postupne uklada pocet spravnych odpovedi, tzn. pokud se hodnota pole resultsArray a userAnswers shoduji, pak je +1
 
-//funkce pro generovani nahodneho cisla mezi cisli 1 az 9 (omezeni je pouze tady, jinak by mel program umet pracovat s vetsim rozpetim)
-function generateRandomNumber() {
-  const randomNumber = Math.floor(Math.random()*9)+1; //generator nahodnych cisel mezi 1 az 9
-  random = randomNumber; // vygenerovane nahodne cislo se ulozi do globalni promenne random
-}
-
-//funkce pro generovani nahodneho znaku (operatoru) +, -, *
-function generateRandomOperator() {
-  const mathOperators = ['+', '-', '*']; // Toto pole obsahuje znamenka, ze kterych se nahodne vybira to, ktere bude dale pouzivane
-  const index = Math.floor(Math.random() * mathOperators.length); // Nahodne vybere index v poli
-  operator = mathOperators[index]; // Ulozi nahodne vygenerovane znamenko do globalni promenne operator
-}
+const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // zavola funkce ze souboru randomGenerate
 
 // Funkce pro dotazovani uzivatele na pocet prikladu
 function askForNumberOfExamples() {
@@ -79,8 +66,8 @@ function createExamples ()  {
   for (let i = 0; i < numberOfExamples; i++) { //cyklus kterej probehne tolikrat, kolik je prikladu
    console.log(`Příklad číslo ${i + 1}:`); // vypise kolikaty je to priklad
    for (let j = 0; j < numberOfTerms; j++) { //cyklus kterej probehne tolikrat, kolik je clenu
-    generateRandomNumber() //zapne funkci pro generovani nahodnych cisel
-      generateRandomOperator() //zapne funkci pro generovani nahodnych znaku
+    const random = generateRandomNumber(); // zavola funkci gerateRandomNumber a ulozi do promenne random
+    const operator = generateRandomOperator(); // zavola funkci generateRandomOperator a ulozi do promenne operator
       process.stdout.write(`${random} `); // vypise nahodne cislo a zustane na stejnem radku
       exampleExpression += `${random}`; // ulozi cislo do promenne exampleExpression
      if (j+1 < numberOfTerms) { //zjistuje, jestli muze napsat znak (hodnota je zvetsena o 1, protoze znaku musi byt o 1 mene nez cisel)
