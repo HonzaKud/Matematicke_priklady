@@ -16,21 +16,7 @@ let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivat
 let correctAnswersCount = 0; //Promenna postupne uklada pocet spravnych odpovedi, tzn. pokud se hodnota pole resultsArray a userAnswers shoduji, pak je +1
 
 const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // zavola funkce ze souboru randomGenerate
-
-// Funkce pro dotazovani uzivatele na pocet prikladu
-function askForNumberOfExamples() {
-  rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)', (userExampleCountInput) => { //dotaz na pocet prikladu a cekani na odpoved
-    // Kontrola spravnosti odpovedi
-    if (userExampleCountInput >= 1 && userExampleCountInput <= 9) {
-      console.log(`Děkuji, pocet prikladu bude: ${userExampleCountInput}`); // vypsani odpovedi
-      numberOfExamples = userExampleCountInput; //prepsani promenne do globalni promenne numberOfExamples
-      askForNumberOfTerms(); // Zavre rozhrani, pokud je vstup platny
-    } else {
-      console.log('Neplatny vstup. Zkus to znovu.'); // Zprava o neplatnem vstupu
-      askForNumberOfExamples(); // Znovu se ptat uzivatele
-    }
-  });
-}
+const { askForNumberOfExamples } = require('./userInput'); // zavola funkce ze souboru userInput
 
 // Funkce pro dotazovani uzivatele na vysledek
 function askForResult() {
@@ -58,11 +44,13 @@ function compareArrays (resultsArray, userAnswers) {
       correctAnswersCount++; // Zvysi se pocet o 1, dokud se hodnoty nebudou shodovat
     }
   }
+
   console.log(`Pocet spravnych odpovedi je: ${correctAnswersCount} / ${numberOfExamples}`); // vypsani poctu spravnych odpovedi a poctu celkovych odpovedi
 }
 
 //funkce pro vytvareni prikladu
 function createExamples ()  {
+
   for (let i = 0; i < numberOfExamples; i++) { //cyklus kterej probehne tolikrat, kolik je prikladu
    console.log(`Příklad číslo ${i + 1}:`); // vypise kolikaty je to priklad
    for (let j = 0; j < numberOfTerms; j++) { //cyklus kterej probehne tolikrat, kolik je clenu
@@ -104,4 +92,7 @@ function askForNumberOfTerms() {
   }
 
 // spusti se funce
-askForNumberOfExamples();
+askForNumberOfExamples(rl, (input) => {
+numberOfExamples = input;
+askForNumberOfTerms();
+});
