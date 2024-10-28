@@ -16,26 +16,7 @@ let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivat
 let correctAnswersCount = 0; //Promenna postupne uklada pocet spravnych odpovedi, tzn. pokud se hodnota pole resultsArray a userAnswers shoduji, pak je +1
 
 const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // zavola funkce ze souboru randomGenerate
-const { askForNumberOfExamples, askForNumberOfTerms } = require('./userInput'); // zavola funkce ze souboru userInput
-
-// Funkce pro dotazovani uzivatele na vysledek
-function askForResult() {
-  rl.question(`Napis vysledek prikladu cislo ${exampleIndex + 1} :`, (userAnswerInput) => { //dotaz na vysledky prikladu a cekani na odpoved
-    console.log('Děkuji');
-    userAnswers.push(userAnswerInput);  // Pridani odpovedi do pole 
-    exampleIndex++; // Zvetseni promenne exampleIndex o 1 pro dalsi priklad
-    
-    if (exampleIndex < numberOfExamples) { // Overeni, zda jsou projity vsechny priklady
-      askForResult(); // Zavolani funkci znovu pro dalsi priklad
-    }
-    else
-    {
-    //console.log('Všechny odpovědi: ', userAnswers); // overeni jestli jsou v promenne userAnswers spravna data
-    rl.close(); //zavreni readline
-    compareArrays (resultsArray, userAnswers); //zavola funci pro porovnani dvou poli
-    }
-  })
-};
+const { askForNumberOfExamples, askForNumberOfTerms, askForResult } = require('./userInput'); // zavola funkce ze souboru userInput
 
 //Funkce pro porovnani dvou poli
 function compareArrays (resultsArray, userAnswers) { 
@@ -49,7 +30,7 @@ function compareArrays (resultsArray, userAnswers) {
 }
 
 //funkce pro vytvareni prikladu
-function createExamples ()  {
+function createExamples(callback)  {
 
   for (let i = 0; i < numberOfExamples; i++) { //cyklus kterej probehne tolikrat, kolik je prikladu
    console.log(`Příklad číslo ${i + 1}:`); // vypise kolikaty je to priklad
@@ -72,7 +53,7 @@ function createExamples ()  {
   console.log(); // Prida se novy radek
   }
 //console.log(resultsArray); //kontrola pro pole, to se vypise
-askForResult(); // zavola funkci pro zeptani se uzivatele na vysledek
+askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback); // zavola funkci pro zeptani se uzivatele na vysledek
 }
 
 // spusti se funce
@@ -80,6 +61,8 @@ askForNumberOfExamples(rl, (input) => {
 numberOfExamples = input;
 askForNumberOfTerms(rl, (input) => {
 numberOfTerms = input;
-createExamples() // zavola funkci na vytvoreni prikladu
-  });
+createExamples((resultsArray, userAnswers) => {
+  compareArrays(resultsArray, userAnswers);
+});
+});
 });

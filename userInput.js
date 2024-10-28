@@ -29,6 +29,24 @@ function askForNumberOfTerms(rl, callback) {
   });
 }
 
+// Funkce pro dotazovani uzivatele na vysledek
+function askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback) {
+  rl.question(`Napis vysledek prikladu cislo ${exampleIndex + 1} :`, (userAnswerInput) => { //dotaz na vysledky prikladu a cekani na odpoved
+    console.log('Děkuji');
+    userAnswers.push(userAnswerInput); // Pridani odpovedi do pole 
+    exampleIndex++; // Zvetseni promenne exampleIndex o 1 pro dalsi priklad
+    
+    if (exampleIndex < numberOfExamples) { // Overeni, zda jsou projity vsechny priklady
+      askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback); // Zavolani funkci znovu pro dalsi priklad
+    }
+    else {
+    //console.log('Všechny odpovědi: ', userAnswers); // overeni jestli jsou v promenne userAnswers spravna data
+    rl.close(); //zavreni readline
+    if (typeof callback === 'function') {
+      callback(resultsArray, userAnswers);
+  }
+}
+  })
+};
 
-
-  module.exports = { askForNumberOfExamples, askForNumberOfTerms };
+  module.exports = { askForNumberOfExamples, askForNumberOfTerms, askForResult };
