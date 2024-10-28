@@ -13,21 +13,10 @@ let result; // Do teto promenne se ulozi vysledek pocitacem spocitaneho prikladu
 let exampleIndex = 0; //Promenna, ktera slouzi k vypisovani poctu prikladu, az se promenna rovna numberOfExamples, pak dojde k porovnani pole vysledku s polem vysledku uzivatele
 let resultsArray = []; // Pole do ktereho se ukladaji spravne vysledky prikladu, ktere spocita pocitac
 let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivatel
-let correctAnswersCount = 0; //Promenna postupne uklada pocet spravnych odpovedi, tzn. pokud se hodnota pole resultsArray a userAnswers shoduji, pak je +1
 
 const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // zavola funkce ze souboru randomGenerate
 const { askForNumberOfExamples, askForNumberOfTerms, askForResult } = require('./userInput'); // zavola funkce ze souboru userInput
-
-//Funkce pro porovnani dvou poli
-function compareArrays (resultsArray, userAnswers) { 
-  for (let i = 0; i < resultsArray.length; i++) { // cyklus pro prochazeni jednotlivych hodnotach v polich
-   if (resultsArray[i] == userAnswers[i]) { // pokud se pole shoduji
-      correctAnswersCount++; // Zvysi se pocet o 1, dokud se hodnoty nebudou shodovat
-    }
-  }
-
-  console.log(`Pocet spravnych odpovedi je: ${correctAnswersCount} / ${numberOfExamples}`); // vypsani poctu spravnych odpovedi a poctu celkovych odpovedi
-}
+const { compareArrays } = require('./comparison'); //
 
 //funkce pro vytvareni prikladu
 function createExamples(callback)  {
@@ -62,7 +51,7 @@ numberOfExamples = input;
 askForNumberOfTerms(rl, (input) => {
 numberOfTerms = input;
 createExamples((resultsArray, userAnswers) => {
-  compareArrays(resultsArray, userAnswers);
+compareArrays(resultsArray, userAnswers, numberOfExamples);
 });
 });
 });
