@@ -12,4 +12,23 @@ function askForNumberOfExamples(rl, callback) {
     });
   }
 
-  module.exports = { askForNumberOfExamples };
+// Funkce pro dotazovani uzivatele na pocet clenu v prikladech
+function askForNumberOfTerms(rl, callback) {
+  rl.question('Napis kolik ma mit kazdy priklad clenu (napis cislo od 1 do 9)', (userTermsCountInput) => { //dotaz na pocet clenu a cekani na odpoved
+    // zkontroluj, zda je odpoved spravna
+    if (userTermsCountInput >= 1 && userTermsCountInput <= 9) {
+      console.log(`Děkuji, pocet clenu bude: ${userTermsCountInput}`); //vypsani odpovedi
+      callback (parseInt(userTermsCountInput));
+      //numberOfTerms = userTermsCountInput; //ulozeni odpovedi do globalni promenne numberOfTerms
+       // Generace poctu prikladu
+           // createExamples() // zavola funkci na vytvoreni prikladu
+    } else {
+      console.log('Neplatný vstup. Zkus to znovu.'); // pokud na vstupu uzivatel napise kravinu
+      askForNumberOfTerms(rl, callback); // znovu se zeptame uzivatele na pocet clenu
+    }
+  });
+}
+
+
+
+  module.exports = { askForNumberOfExamples, askForNumberOfTerms };

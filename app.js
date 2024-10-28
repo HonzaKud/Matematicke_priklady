@@ -6,7 +6,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-let numberOfExamples = null; //Promenna na pocet prikladu, ktere vyplni uzivatel
+let numberOfExamples = null; //Promenna na pocet prikladu, ktere vyplni uzivatel, tahle promenna se pouziva u hodne funkci
 let numberOfTerms = null; // Promenna na pocet clenu, tohle take vyplni uzivatel
 let exampleExpression = ""; // Do teto promenne se uklada postupne cely priklad, ktery se pak nasledne vypocita pomoci funce eval a ulozi do promenne result
 let result; // Do teto promenne se ulozi vysledek pocitacem spocitaneho prikladu, tato promenna se pak ulozi do pole resultsArray
@@ -16,7 +16,7 @@ let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivat
 let correctAnswersCount = 0; //Promenna postupne uklada pocet spravnych odpovedi, tzn. pokud se hodnota pole resultsArray a userAnswers shoduji, pak je +1
 
 const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // zavola funkce ze souboru randomGenerate
-const { askForNumberOfExamples } = require('./userInput'); // zavola funkce ze souboru userInput
+const { askForNumberOfExamples, askForNumberOfTerms } = require('./userInput'); // zavola funkce ze souboru userInput
 
 // Funkce pro dotazovani uzivatele na vysledek
 function askForResult() {
@@ -75,24 +75,11 @@ function createExamples ()  {
 askForResult(); // zavola funkci pro zeptani se uzivatele na vysledek
 }
 
-// Funkce pro dotazovani uzivatele na pocet clenu v prikladech
-function askForNumberOfTerms() {
-    rl.question('Napis kolik ma mit kazdy priklad clenu (napis cislo od 1 do 9)', (userTermsCountInput) => { //dotaz na pocet clenu a cekani na odpoved
-      // zkontroluj, zda je odpoved spravna
-      if (userTermsCountInput >= 1 && userTermsCountInput <= 9) {
-        console.log(`Děkuji, pocet clenu bude: ${userTermsCountInput}`); //vypsani odpovedi
-        numberOfTerms = userTermsCountInput; //ulozeni odpovedi do globalni promenne numberOfTerms
-         // Generace poctu prikladu
-             createExamples() // zavola funkci na vytvoreni prikladu
-      } else {
-        console.log('Neplatný vstup. Zkus to znovu.'); // pokud na vstupu uzivatel napise kravinu
-        askForNumberOfTerms(); // znovu se zeptame uzivatele na pocet clenu
-      }
-    });
-  }
-
 // spusti se funce
 askForNumberOfExamples(rl, (input) => {
 numberOfExamples = input;
-askForNumberOfTerms();
+askForNumberOfTerms(rl, (input) => {
+numberOfTerms = input;
+createExamples() // zavola funkci na vytvoreni prikladu
+  });
 });
