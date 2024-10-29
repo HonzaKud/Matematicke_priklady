@@ -6,8 +6,6 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-let numberOfExamples = null; //Promenna na pocet prikladu, ktere vyplni uzivatel, tahle promenna se pouziva u hodne funkci, uz bych ji asi zvladl udelat jako lokalni
-
 const { askForNumberOfExamples, askForNumberOfTerms } = require('./userInput'); // zavola funkce ze souboru userInput
 const { compareArrays } = require('./comparison'); //
 const { createExamples } = require('./exampleGenerator'); //
