@@ -11,10 +11,8 @@ const { compareArrays } = require('./comparison'); //
 const { createExamples } = require('./exampleGenerator'); //
 
 // spusti se funce
-askForNumberOfExamples(rl, (input) => {
-numberOfExamples = input;
-askForNumberOfTerms(rl, (input) => {
-numberOfTerms = input;
+askForNumberOfExamples(rl, numberOfExamples => {
+askForNumberOfTerms(rl, numberOfTerms => {
 createExamples(rl, numberOfExamples, numberOfTerms, (resultsArray, userAnswers) => {
 compareArrays(resultsArray, userAnswers, numberOfExamples);
 });
