@@ -10,7 +10,6 @@ let numberOfExamples = null; //Promenna na pocet prikladu, ktere vyplni uzivatel
 let numberOfTerms = null; // Promenna na pocet clenu, tohle take vyplni uzivatel
 let exampleExpression = ""; // Do teto promenne se uklada postupne cely priklad, ktery se pak nasledne vypocita pomoci funce eval a ulozi do promenne result
 let result; // Do teto promenne se ulozi vysledek pocitacem spocitaneho prikladu, tato promenna se pak ulozi do pole resultsArray
-let exampleIndex = 0; //Promenna, ktera slouzi k vypisovani poctu prikladu, az se promenna rovna numberOfExamples, pak dojde k porovnani pole vysledku s polem vysledku uzivatele
 let resultsArray = []; // Pole do ktereho se ukladaji spravne vysledky prikladu, ktere spocita pocitac
 let userAnswers = []; // Pole do ktereho se uklada odpovedi, ktere vyplni uzivatel
 
@@ -42,7 +41,7 @@ function createExamples(callback)  {
   console.log(); // Prida se novy radek
   }
 //console.log(resultsArray); //kontrola pro pole, to se vypise
-askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback); // zavola funkci pro zeptani se uzivatele na vysledek
+askForResult(rl, compareArrays, 0, numberOfExamples, userAnswers, resultsArray, callback); // zavola funkci pro zeptani se uzivatele na vysledek
 }
 
 // spusti se funce
