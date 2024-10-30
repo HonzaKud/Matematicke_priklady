@@ -1,14 +1,10 @@
 // importy funci z jinych souboru
 const { askForResult } = require('./userInput'); // Import funkce askForResult ze souboru userInput.js 
 const { generateRandomNumber, generateRandomOperator } = require('./randomGenerators'); // Import funkci generateRandomNumber a generateRandomOperator ze souboru randomGenerators.js
-const { compareArrays } = require('./comparison'); // Import funkce compareArrays ze souboru comparison.js
-
-
 
 //funkce pro vytvareni prikladu
 function createExamples(rl, numberOfExamples, numberOfTerms, callback)  {
     let resultsArray = []; // Pole pro spravne vysledky
-    let userAnswers = []; // Pole pro uzivatelske odpovědi
 
     for (let i = 0; i < numberOfExamples; i++) { //cyklus kterej probehne tolikrat, kolik je prikladu
         console.log(`Příklad číslo ${i + 1}:`); // vypise kolikaty je to priklad
@@ -35,7 +31,7 @@ function createExamples(rl, numberOfExamples, numberOfTerms, callback)  {
         console.log(); // prida se novy radek
     }
     //console.log(resultsArray); //kontrola pole resultsArray, to se vypise
-    askForResult(rl, compareArrays, 0, numberOfExamples, userAnswers, resultsArray, callback); // zavola funkci pro zeptani se uzivatele na vysledek
+    askForResult(rl, numberOfExamples, resultsArray, callback); // zavola funkci pro zeptani se uzivatele na vysledek
   }
 
   module.exports = { createExamples }; // exportovani funkce pro dalsi vyuziti

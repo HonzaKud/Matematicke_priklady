@@ -1,57 +1,78 @@
-// Funkce pro dotazování uživatele na počet příkladů
+// Funkce pro dotazovani uzivatele na pocet prikladu
 function askForNumberOfExamples(rl, callback) {
-  rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9): ', (userExampleCountInput) => { // Dotaz na počet příkladů a čekání na odpověď
-    // Kontrola správnosti odpovědi
-    if (userExampleCountInput >= 1 && userExampleCountInput <= 9) {
-      console.log(`Děkuji, pocet prikladu bude: ${userExampleCountInput}`); // Výpis odpovědi
-      const numberOfExamples = parseInt(userExampleCountInput);
+  // Pomocna funkce na opakovane dotazovani, je tu kvuli tomu, aby neprobihala rekurze
+  function promptForExample () {
+    rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9): ', (userExampleCountInput) => { // Dotaz na pocet prikladu a cekani na odpoved
+      const numberOfExamples = parseInt(userExampleCountInput); // Pripadne prevedeni vstupu od uzivatele na cele cislo, a prevedeni ho na promenou numberOfExamples
+
+      // Kontrola spravnosti odpovedi, jestli je vstup cislo mezi 1 a 9 
+      if (!isNaN(numberOfExamples) && numberOfExamples >= 1 && numberOfExamples <= 9) { //vykricnik znamena negace a NaN znamena not a number, overeni ze je to cislo
+        console.log(`Děkuji, pocet prikladu bude: ${numberOfExamples}`); // Vypis odpovědi
+        
       
-      // Zavolat další funkci, která se ptá na počet členů
-      askForNumberOfTerms(rl, (numberOfTerms) => {
-        callback(numberOfExamples, numberOfTerms);
-      });
-    } else {
-      console.log('Neplatny vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
-      askForNumberOfExamples(rl, callback); // Znovu se ptát uživatele
-    }
-  });
+        // Zavolani dalsi funkce, ktera se pta na pocet clenu
+        askForNumberOfTerms(rl, (numberOfTerms) => {
+          callback(numberOfExamples, numberOfTerms); // Tato funkce preda pocet prikladu a pocet clenu pro dalsi kroky programu
+        });
+
+      } else {
+        console.log('Neplatny vstup. Zkus to znovu.'); // Zprava o neplatnem vstupu
+        promptForExample(); // Znovu zavola funkci, kdyz je neplatny vstup
+      }
+    });
+  }
+
+  //Spustime pomocnou funkci poprve
+  promptForExample();
 }
 
 // Funkce pro dotazovani uzivatele na pocet clenu v prikladech
 function askForNumberOfTerms(rl, callback) {
-rl.question('Napis kolik ma mit kazdy priklad clenu (napis cislo od 1 do 9)', (userTermsCountInput) => { //dotaz na pocet clenu a cekani na odpoved
-  // zkontroluj, zda je odpoved spravna
-  if (userTermsCountInput >= 1 && userTermsCountInput <= 9) {
-    console.log(`Děkuji, pocet clenu bude: ${userTermsCountInput}`); //vypsani odpovedi
-    callback (parseInt(userTermsCountInput));
-    //numberOfTerms = userTermsCountInput; //ulozeni odpovedi do globalni promenne numberOfTerms
-     // Generace poctu prikladu
-         // createExamples() // zavola funkci na vytvoreni prikladu
-  } else {
-    console.log('Neplatný vstup. Zkus to znovu.'); // pokud na vstupu uzivatel napise kravinu
-    askForNumberOfTerms(rl, callback); // znovu se zeptame uzivatele na pocet clenu
+  //pomocna funkce promtForTerms, aby nedochazeli k rekurzi
+  function promptForTerms () {
+    rl.question('Napis kolik ma mit kazdy priklad clenu (napis cislo od 1 do 9)', (userTermsCountInput) => { //dotaz na pocet clenu a cekani na odpoved
+      const termsCount = parseInt(userTermsCountInput); // prevod vstupu na cislo a prevedeni do promenne termsCount
+    
+      // zkontroluj, zda je odpoved spravna
+      if (!isNaN(termsCount) && termsCount >= 1 && termsCount <= 9) { //vykricnik znamena negace a NaN znamena not a number, overeni ze je to cislo
+        console.log(`Děkuji, pocet clenu bude: ${userTermsCountInput}`); //vypsani odpovedi
+        callback (termsCount); // Zavolani hlavniho callbacku s poctem clenu
+      } else {
+        console.log('Neplatný vstup. Zkus to znovu.'); // pokud na vstupu uzivatel napise kravinu
+        promptForTerms(); // znovu se zeptame uzivatele na pocet clenu
+      }
+    });
   }
-});
+
+//prvni volani funkce
+  promptForTerms();
 }
 
 // Funkce pro dotazovani uzivatele na vysledek
-function askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback) {
-rl.question(`Napis vysledek prikladu cislo ${exampleIndex + 1} :`, (userAnswerInput) => { //dotaz na vysledky prikladu a cekani na odpoved
-  console.log('Děkuji');
-  userAnswers.push(userAnswerInput); // Pridani odpovedi do pole 
-  exampleIndex++; // Zvetseni promenne exampleIndex o 1 pro dalsi priklad
-  
-  if (exampleIndex < numberOfExamples) { // Overeni, zda jsou projity vsechny priklady
-    askForResult(rl, compareArrays, exampleIndex, numberOfExamples, userAnswers, resultsArray, callback); // Zavolani funkci znovu pro dalsi priklad
-  }
-  else {
-  //console.log('Všechny odpovědi: ', userAnswers); // overeni jestli jsou v promenne userAnswers spravna data
-  rl.close(); //zavreni readline
-  if (typeof callback === 'function') {
-    callback(resultsArray, userAnswers);
-}
-}
-})
-};
+function askForResult(rl, numberOfExamples, resultsArray, callback) {
+  let exampleIndex = 0; // Promenna pro sledovani indexu aktualniho prikladu
+  let userAnswers = []; // Pole pro odpovedi uzivatele
 
-module.exports = { askForNumberOfExamples, askForNumberOfTerms, askForResult };
+  // pomocna funkce pro postupne dotazovani uzivatele na priklady, je tu aby nedochazelo k rekurzi
+  function promptForResult() {
+    if(exampleIndex < numberOfExamples) { //pokud je index prikladu mensi nez pocet prikladu, pak
+      rl.question(`Napis vysledek prikladu cislo ${exampleIndex + 1} :`, (userAnswerInput) => { //dotaz na vysledky prikladu a cekani na odpoved
+        console.log('Děkuji'); // vypsani odpovedi
+        userAnswers.push(parseInt(userAnswerInput)); // Pridani odpovedi do pole 
+        exampleIndex++; // Zvetseni promenne exampleIndex o 1 pro dalsi priklad
+        promptForResult(); // zavolani opet funkce promptForResult
+      });
+    } else {
+      //console.log('Všechny odpovědi: ', userAnswers); // overeni jestli jsou v promenne userAnswers spravna data
+      rl.close(); //zavreni readline
+      if (typeof callback === 'function') {
+        callback(resultsArray, userAnswers);
+      }
+    }
+  }
+
+  //spustime dotaz na poprve
+  promptForResult();
+}
+
+module.exports = { askForNumberOfExamples, askForNumberOfTerms, askForResult }; // exportovani funkce pro dalsi vyuziti
