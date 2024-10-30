@@ -1,13 +1,18 @@
-// Funkce pro dotazovani uzivatele na pocet prikladu
+// Funkce pro dotazování uživatele na počet příkladů
 function askForNumberOfExamples(rl, callback) {
-  rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9)', (userExampleCountInput) => { //dotaz na pocet prikladu a cekani na odpoved
-    // Kontrola spravnosti odpovedi
+  rl.question('Napis kolik mam vytvorit prikladu (napis cislo od 1 do 9): ', (userExampleCountInput) => { // Dotaz na počet příkladů a čekání na odpověď
+    // Kontrola správnosti odpovědi
     if (userExampleCountInput >= 1 && userExampleCountInput <= 9) {
-      console.log(`Děkuji, pocet prikladu bude: ${userExampleCountInput}`); // vypsani odpovedi
-      callback (parseInt(userExampleCountInput)); //prepsani promenne do globalni promenne numberOfExamples
+      console.log(`Děkuji, pocet prikladu bude: ${userExampleCountInput}`); // Výpis odpovědi
+      const numberOfExamples = parseInt(userExampleCountInput);
+      
+      // Zavolat další funkci, která se ptá na počet členů
+      askForNumberOfTerms(rl, (numberOfTerms) => {
+        callback(numberOfExamples, numberOfTerms);
+      });
     } else {
-      console.log('Neplatny vstup. Zkus to znovu.'); // Zprava o neplatnem vstupu
-      askForNumberOfExamples(rl, callback); // Znovu se ptat uzivatele
+      console.log('Neplatny vstup. Zkus to znovu.'); // Zpráva o neplatném vstupu
+      askForNumberOfExamples(rl, callback); // Znovu se ptát uživatele
     }
   });
 }

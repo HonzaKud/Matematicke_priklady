@@ -1,20 +1,18 @@
-const readline = require('readline');
+// Import modulu
+const readline = require('readline'); // Import modulu readline
+const { askForNumberOfExamples } = require('./userInput'); // Import funkci askForNumberOfExamples ze souboru userInput.js
+const { compareArrays } = require('./comparison'); // Import funkce compareArrays ze souboru comparison.js
+const { createExamples } = require('./exampleGenerator'); // Import funkce createExamples ze souboru exampleGenerator.js
 
-// Vytvoření rozhraní pro čtení vstupu
+// Vytvoreni rozhrani pro cteni vstupu
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-const { askForNumberOfExamples, askForNumberOfTerms } = require('./userInput'); // zavola funkce ze souboru userInput
-const { compareArrays } = require('./comparison'); //
-const { createExamples } = require('./exampleGenerator'); //
-
-// spusti se funce
-askForNumberOfExamples(rl, numberOfExamples => {
-askForNumberOfTerms(rl, numberOfTerms => {
-createExamples(rl, numberOfExamples, numberOfTerms, (resultsArray, userAnswers) => {
-compareArrays(resultsArray, userAnswers, numberOfExamples);
-});
-});
+// Spousti se funkce
+askForNumberOfExamples(rl, (numberOfExamples, numberOfTerms) => {// Zacatek programu, ptame se uzivatele na na vstupy
+  createExamples(rl, numberOfExamples, numberOfTerms, (resultsArray, userAnswers) => {//funkce pro vytvareni prikladu
+    compareArrays(resultsArray, userAnswers, numberOfExamples);// funkce pro porovnani poli vysledku uzivatele a programu
+  });
 });
