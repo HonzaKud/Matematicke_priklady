@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 });
 
 // Spousti se funkce
-askForNumberOfExamples(rl, (numberOfExamples, numberOfTerms) => {// Zacatek programu, ptame se uzivatele na na vstupy
+askForNumberOfExamples(rl, (numberOfExamples, numberOfTerms) => {// zacatek programu, ptame se uzivatele na na vstupy
   createExamples(rl, numberOfExamples, numberOfTerms, (resultsArray, userAnswers) => {//funkce pro vytvareni prikladu
     compareArrays(resultsArray, userAnswers, numberOfExamples);// funkce pro porovnani poli vysledku uzivatele a programu
   });
